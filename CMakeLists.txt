@@ -60,6 +60,6 @@ target_sources(${PROJECT_NAME}
 	"${CMAKE_CURRENT_SOURCE_DIR}/src/header/graphics.h"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/graphics.cpp"
 
-    "${CMAKE_CURRENT_SOURCE_DIR}/src/header/particles.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/header/particles.h"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/particles.cpp"
 )

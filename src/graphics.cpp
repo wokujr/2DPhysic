@@ -1,7 +1,5 @@
 #include "graphics.h"
-
 #include <iostream>
-#include <SDL.h>
 
 int Graphics::m_windowWidth = 0;
 int Graphics::m_windowHeight = 0;
@@ -53,6 +51,11 @@ void Graphics::ClearScreen(Uint32 color)
 {
 	SDL_SetRenderDrawColor(renderer, color >> 16, color >> 8, color, 255);
 	SDL_RenderClear(renderer);
+}
+
+void Graphics::DrawLine(int x0, int y0, int x1, int y1, Uint32 color)
+{
+	
 }
 
 
