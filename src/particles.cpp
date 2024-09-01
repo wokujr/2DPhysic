@@ -2,16 +2,11 @@
 
 #include <iostream>
 
-Particle::Particle()
-{
-}
-
 Particle::Particle(float x, float y, float mass)
 	:
-	m_mass(mass),
-	m_position( Vec2(x, y) )
+	position(Vec2(x, y)),
+	mass(mass)
 {
-
 	std::cout << "Particle constructor called \n";
 }
 

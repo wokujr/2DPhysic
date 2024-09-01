@@ -54,6 +54,11 @@ void Graphics::ClearScreen(Uint32 color)
 	SDL_RenderClear(renderer);
 }
 
+void Graphics::RenderFrame()
+{
+	SDL_RenderPresent(renderer);
+}
+
 void Graphics::DrawLine(int x0, int y0, int x1, int y1, Uint32 color)
 {
 	lineColor(renderer, x0, y0, x1, y1, color);

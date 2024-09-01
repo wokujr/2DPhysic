@@ -1,6 +1,4 @@
 #pragma once
-
-#include "graphics.h"
 #include "particles.h"
 
 class Application
@@ -13,7 +11,7 @@ public:
 	void Setup();
 	void Input();
 	void Update();
-	void Render();
+	static void Render();
 	void Destroy();
 
 private:
