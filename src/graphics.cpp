@@ -1,4 +1,5 @@
 #include "graphics.h"
+#include <SDL2_gfxPrimitives.h>
 #include <iostream>
 
 int Graphics::m_windowWidth = 0;
@@ -55,7 +56,64 @@ void Graphics::ClearScreen(Uint32 color)
 
 void Graphics::DrawLine(int x0, int y0, int x1, int y1, Uint32 color)
 {
-	
+	lineColor(renderer, x0, y0, x1, y1, color);
 }
+
+void Graphics::DrawCircle(int x, int y, int radius, float angle, Uint32 color)
+{
+	circleColor(renderer, x, y, radius, color);
+	lineColor(renderer, x, y, x + cos(angle) * radius, y + sin(angle) * radius, color);
+}
+
+void Graphics::DrawFillCircle(int x, int y, int radius, Uint32 color)
+{
+	filledCircleColor(renderer, x, y, radius, color);
+}
+
+void Graphics::DrawRect(int x, int y, int width, int height, Uint32 color)
+{
+	boxColor(renderer, x - width / 2.0, y - height / 2.0, x + width / 2.0, y + height / 2.0, color);
+}
+
+void Graphics::DrawPolygon(int x, int y, const std::vector<Vec2>& vertices, Uint32 color)
+{
+	for (int i = 0; i < vertices.size(); i++)
+	{
+		int currentIndex = i;
+		int nextIndex = (i + 1) % vertices.size();
+		lineColor(renderer, vertices[currentIndex].GetX(), vertices[currentIndex].GetX(), vertices[nextIndex].GetX(), vertices[nextIndex].GetY(), color);	// IDK if this going to produce error
+	}
+	filledCircleColor(renderer, x, y, 1, color);
+}
+
+void Graphics::DrawFillPolygon(int x, int y, const std::vector<Vec2>& vertices, Uint32 color)
+{
+	std::vector<short> vectorX;
+	std::vector<short>vectorY;
+	for (int i = 0; i <vertices.size(); i++)
+	{
+		vectorX.push_back(static_cast<short>(vertices[i].GetX()));
+		vectorY.push_back(static_cast<short>(vertices[i].GetY()));
+	}
+	filledPolygonColor(renderer, &vectorX[0], &vectorY[0], vertices.size(), color);
+	filledCircleColor(renderer, x, y, 1, 0xFF000000);
+}
+
+void Graphics::DrawTexture(int x, int y, int width, int height, float rotation, SDL_Texture* texture)
+{
+	SDL_Rect dstRect = { x - (width / 2), y - (height / 2), width, height };
+	float rotationDeg = rotation * 57.2958;
+	SDL_RenderCopyEx(renderer, texture, nullptr, &dstRect, rotationDeg, nullptr, SDL_FLIP_NONE);
+}
+
+void Graphics::CloseWindow()
+{
+	SDL_DestroyRenderer(renderer);
+	SDL_DestroyWindow(window);
+	SDL_Quit();
+}
+
+
+
 
 

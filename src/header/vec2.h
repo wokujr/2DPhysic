@@ -38,6 +38,11 @@ public:
 	Vec2 operator *= (const float number);
 	Vec2 operator /= (const float number);
 
+	float GetX() const;
+	float GetY() const;
+	void SetX(float x);
+	void SetY(float y);
+
 private:
 	float m_y;
 	float m_x;

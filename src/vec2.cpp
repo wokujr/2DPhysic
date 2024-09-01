@@ -164,4 +164,25 @@ Vec2 Vec2::operator /= (const float number)
 	return *this;
 }
 
+float Vec2::GetX() const
+{
+	return m_x;
+}
+
+float Vec2::GetY() const
+{
+	return m_y;
+
+}
+
+void Vec2::SetX(float x)
+{
+	m_x = x;
+}
+
+void Vec2::SetY(float y)
+{
+	m_y = y;
+}
+
 

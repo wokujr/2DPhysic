@@ -3,7 +3,6 @@
 #include <SDL.h>
 #include <SDL_render.h>
 #include <SDL_video.h>
-#include<SDL2_gfxPrimitives.h>
 #include <vector>
 #include "vec2.h"
 
