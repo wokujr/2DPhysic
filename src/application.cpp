@@ -1,5 +1,6 @@
 #include "application.h"
 
+#include <iostream>
 #include <windows.h>
 #include "graphics.h"
 #include "constants.h"
@@ -45,15 +46,35 @@ void Application::Input()
 /*Called several times per second, meaning called per FPS */
 void Application::Update()
 {
+	static int timePreviousFrame = 0;						//should i make it static?
+	static int frameCount = 0;
+	static float fps = 0.0;
+	static int timeAccumulator = 0;
+
+	int currentTime = SDL_GetTicks();
+	int elapsedTime = currentTime - timePreviousFrame;
+	timePreviousFrame = currentTime;
+
+	// Accumulated time for FPS calculation (after every second)
+	timeAccumulator += elapsedTime;
+	frameCount++;
+
+	if (timeAccumulator >= 1000)
+	{
+		fps = frameCount / (timeAccumulator / 1000.0f);
+		std::cout << "Current FPS= " << fps << "\n";
+
+		//Reset Frame count for next second
+		frameCount = 0;
+		timeAccumulator = 0;
+	}
+
 	/* Check if we are move too fast, and if so, waste some miliseconds, yes we move too fast we need to slow it down until it reach MILLISECS_PER_FRAME aka 1000/60 in this case */
-	Constant constant;
-	static int timePreviousFrame = 0; //should i make it static?
-	int timeToWait = constant.MILLISECOND_PER_FRAME - (SDL_GetTicks() - timePreviousFrame);
+	int timeToWait = Constant::MILLISECOND_PER_FRAME - elapsedTime;
 	if (timeToWait > 0)
 	{
 		SDL_Delay(timeToWait);
 	}
-	timePreviousFrame = SDL_GetTicks();
 
 	particle->m_velocity = Vec2(2.0, 0.0);
 
