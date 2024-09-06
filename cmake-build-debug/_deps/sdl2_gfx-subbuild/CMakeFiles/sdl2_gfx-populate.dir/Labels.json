@@ -1,0 +1,46 @@
+{
+	"sources" : 
+	[
+		{
+			"file" : "E:/Project/C++/2DGamePhysic/cmake-build-debug/_deps/sdl2_gfx-subbuild/CMakeFiles/sdl2_gfx-populate"
+		},
+		{
+			"file" : "E:/Project/C++/2DGamePhysic/cmake-build-debug/_deps/sdl2_gfx-subbuild/CMakeFiles/sdl2_gfx-populate.rule"
+		},
+		{
+			"file" : "E:/Project/C++/2DGamePhysic/cmake-build-debug/_deps/sdl2_gfx-subbuild/CMakeFiles/sdl2_gfx-populate-complete.rule"
+		},
+		{
+			"file" : "E:/Project/C++/2DGamePhysic/cmake-build-debug/_deps/sdl2_gfx-subbuild/sdl2_gfx-populate-prefix/src/sdl2_gfx-populate-stamp/sdl2_gfx-populate-build.rule"
+		},
+		{
+			"file" : "E:/Project/C++/2DGamePhysic/cmake-build-debug/_deps/sdl2_gfx-subbuild/sdl2_gfx-populate-prefix/src/sdl2_gfx-populate-stamp/sdl2_gfx-populate-configure.rule"
+		},
+		{
+			"file" : "E:/Project/C++/2DGamePhysic/cmake-build-debug/_deps/sdl2_gfx-subbuild/sdl2_gfx-populate-prefix/src/sdl2_gfx-populate-stamp/sdl2_gfx-populate-download.rule"
+		},
+		{
+			"file" : "E:/Project/C++/2DGamePhysic/cmake-build-debug/_deps/sdl2_gfx-subbuild/sdl2_gfx-populate-prefix/src/sdl2_gfx-populate-stamp/sdl2_gfx-populate-install.rule"
+		},
+		{
+			"file" : "E:/Project/C++/2DGamePhysic/cmake-build-debug/_deps/sdl2_gfx-subbuild/sdl2_gfx-populate-prefix/src/sdl2_gfx-populate-stamp/sdl2_gfx-populate-mkdir.rule"
+		},
+		{
+			"file" : "E:/Project/C++/2DGamePhysic/cmake-build-debug/_deps/sdl2_gfx-subbuild/sdl2_gfx-populate-prefix/src/sdl2_gfx-populate-stamp/sdl2_gfx-populate-patch.rule"
+		},
+		{
+			"file" : "E:/Project/C++/2DGamePhysic/cmake-build-debug/_deps/sdl2_gfx-subbuild/sdl2_gfx-populate-prefix/src/sdl2_gfx-populate-stamp/sdl2_gfx-populate-test.rule"
+		},
+		{
+			"file" : "E:/Project/C++/2DGamePhysic/cmake-build-debug/_deps/sdl2_gfx-subbuild/sdl2_gfx-populate-prefix/src/sdl2_gfx-populate-stamp/sdl2_gfx-populate-update.rule"
+		}
+	],
+	"target" : 
+	{
+		"labels" : 
+		[
+			"sdl2_gfx-populate"
+		],
+		"name" : "sdl2_gfx-populate"
+	}
+}

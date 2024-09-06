@@ -8,10 +8,10 @@ public:
 	Particle(float x, float y, float mass);
 	~Particle();
 
-	Vec2 position;
-	Vec2 velocity;
-	Vec2 acceleration;
+	Vec2 m_position;
+	Vec2 m_velocity;
+	Vec2 m_acceleration;
 
-	float mass;
+	float m_mass;
 	
 };

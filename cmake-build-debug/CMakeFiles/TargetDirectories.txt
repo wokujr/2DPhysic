@@ -1,0 +1,4 @@
+E:/Project/C++/2DGamePhysic/cmake-build-debug/CMakeFiles/SDL2_gfx.dir
+E:/Project/C++/2DGamePhysic/cmake-build-debug/CMakeFiles/2DGamePhysic.dir
+E:/Project/C++/2DGamePhysic/cmake-build-debug/CMakeFiles/edit_cache.dir
+E:/Project/C++/2DGamePhysic/cmake-build-debug/CMakeFiles/rebuild_cache.dir

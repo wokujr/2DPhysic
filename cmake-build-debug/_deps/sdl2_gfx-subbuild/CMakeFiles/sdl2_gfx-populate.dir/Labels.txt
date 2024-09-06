@@ -1,0 +1,14 @@
+# Target labels
+ sdl2_gfx-populate
+# Source files and their labels
+E:/Project/C++/2DGamePhysic/cmake-build-debug/_deps/sdl2_gfx-subbuild/CMakeFiles/sdl2_gfx-populate
+E:/Project/C++/2DGamePhysic/cmake-build-debug/_deps/sdl2_gfx-subbuild/CMakeFiles/sdl2_gfx-populate.rule
+E:/Project/C++/2DGamePhysic/cmake-build-debug/_deps/sdl2_gfx-subbuild/CMakeFiles/sdl2_gfx-populate-complete.rule
+E:/Project/C++/2DGamePhysic/cmake-build-debug/_deps/sdl2_gfx-subbuild/sdl2_gfx-populate-prefix/src/sdl2_gfx-populate-stamp/sdl2_gfx-populate-build.rule
+E:/Project/C++/2DGamePhysic/cmake-build-debug/_deps/sdl2_gfx-subbuild/sdl2_gfx-populate-prefix/src/sdl2_gfx-populate-stamp/sdl2_gfx-populate-configure.rule
+E:/Project/C++/2DGamePhysic/cmake-build-debug/_deps/sdl2_gfx-subbuild/sdl2_gfx-populate-prefix/src/sdl2_gfx-populate-stamp/sdl2_gfx-populate-download.rule
+E:/Project/C++/2DGamePhysic/cmake-build-debug/_deps/sdl2_gfx-subbuild/sdl2_gfx-populate-prefix/src/sdl2_gfx-populate-stamp/sdl2_gfx-populate-install.rule
+E:/Project/C++/2DGamePhysic/cmake-build-debug/_deps/sdl2_gfx-subbuild/sdl2_gfx-populate-prefix/src/sdl2_gfx-populate-stamp/sdl2_gfx-populate-mkdir.rule
+E:/Project/C++/2DGamePhysic/cmake-build-debug/_deps/sdl2_gfx-subbuild/sdl2_gfx-populate-prefix/src/sdl2_gfx-populate-stamp/sdl2_gfx-populate-patch.rule
+E:/Project/C++/2DGamePhysic/cmake-build-debug/_deps/sdl2_gfx-subbuild/sdl2_gfx-populate-prefix/src/sdl2_gfx-populate-stamp/sdl2_gfx-populate-test.rule
+E:/Project/C++/2DGamePhysic/cmake-build-debug/_deps/sdl2_gfx-subbuild/sdl2_gfx-populate-prefix/src/sdl2_gfx-populate-stamp/sdl2_gfx-populate-update.rule

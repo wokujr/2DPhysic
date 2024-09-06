@@ -7,15 +7,20 @@ public:
 	Application();
 	~Application() = default;
 
-	bool isRunning();
+	bool IsRunning();
 	void Setup();
 	void Input();
 	void Update();
-	static void Render();
+	void Render();
 	void Destroy();
 
-private:
+public:
 	bool m_running;
 	Particle* particle;
+
+//private:
+//	bool m_running;
+//	Particle* particle;
+
 };
 

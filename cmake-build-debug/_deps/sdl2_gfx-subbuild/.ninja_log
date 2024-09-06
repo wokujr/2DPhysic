@@ -1,0 +1,21 @@
+# ninja log v5
+2	46	7469885767932031	sdl2_gfx-populate-prefix/src/sdl2_gfx-populate-stamp/sdl2_gfx-populate-mkdir	d93a861d6b84660b
+2	46	7469885767932031	E:/Project/C++/2DGamePhysic/cmake-build-debug/_deps/sdl2_gfx-subbuild/sdl2_gfx-populate-prefix/src/sdl2_gfx-populate-stamp/sdl2_gfx-populate-mkdir	d93a861d6b84660b
+46	4757	7469885815047698	sdl2_gfx-populate-prefix/src/sdl2_gfx-populate-stamp/sdl2_gfx-populate-download	38d338e2b998102a
+46	4757	7469885815047698	E:/Project/C++/2DGamePhysic/cmake-build-debug/_deps/sdl2_gfx-subbuild/sdl2_gfx-populate-prefix/src/sdl2_gfx-populate-stamp/sdl2_gfx-populate-download	38d338e2b998102a
+4757	6107	0	sdl2_gfx-populate-prefix/src/sdl2_gfx-populate-stamp/sdl2_gfx-populate-update	ad5659e91fb1d330
+4757	6107	0	E:/Project/C++/2DGamePhysic/cmake-build-debug/_deps/sdl2_gfx-subbuild/sdl2_gfx-populate-prefix/src/sdl2_gfx-populate-stamp/sdl2_gfx-populate-update	ad5659e91fb1d330
+6107	6151	7469885828989250	sdl2_gfx-populate-prefix/src/sdl2_gfx-populate-stamp/sdl2_gfx-populate-patch	a3ad560f0a0aff6b
+6107	6151	7469885828989250	E:/Project/C++/2DGamePhysic/cmake-build-debug/_deps/sdl2_gfx-subbuild/sdl2_gfx-populate-prefix/src/sdl2_gfx-populate-stamp/sdl2_gfx-populate-patch	a3ad560f0a0aff6b
+6151	6196	7469885829447347	sdl2_gfx-populate-prefix/src/sdl2_gfx-populate-stamp/sdl2_gfx-populate-configure	41f9a1c0ac9ad45b
+6151	6196	7469885829447347	E:/Project/C++/2DGamePhysic/cmake-build-debug/_deps/sdl2_gfx-subbuild/sdl2_gfx-populate-prefix/src/sdl2_gfx-populate-stamp/sdl2_gfx-populate-configure	41f9a1c0ac9ad45b
+6196	6239	7469885829875967	sdl2_gfx-populate-prefix/src/sdl2_gfx-populate-stamp/sdl2_gfx-populate-build	ed2a42b16ded5293
+6196	6239	7469885829875967	E:/Project/C++/2DGamePhysic/cmake-build-debug/_deps/sdl2_gfx-subbuild/sdl2_gfx-populate-prefix/src/sdl2_gfx-populate-stamp/sdl2_gfx-populate-build	ed2a42b16ded5293
+6239	6279	7469885830286800	sdl2_gfx-populate-prefix/src/sdl2_gfx-populate-stamp/sdl2_gfx-populate-install	2a93c7a3715943cd
+6239	6279	7469885830286800	E:/Project/C++/2DGamePhysic/cmake-build-debug/_deps/sdl2_gfx-subbuild/sdl2_gfx-populate-prefix/src/sdl2_gfx-populate-stamp/sdl2_gfx-populate-install	2a93c7a3715943cd
+6279	6317	7469885830666094	sdl2_gfx-populate-prefix/src/sdl2_gfx-populate-stamp/sdl2_gfx-populate-test	3487934835bc4ef3
+6279	6317	7469885830666094	E:/Project/C++/2DGamePhysic/cmake-build-debug/_deps/sdl2_gfx-subbuild/sdl2_gfx-populate-prefix/src/sdl2_gfx-populate-stamp/sdl2_gfx-populate-test	3487934835bc4ef3
+6317	6371	7469885831203622	CMakeFiles/sdl2_gfx-populate-complete	3de1abf8f7a64b5
+6317	6371	7469885831203622	sdl2_gfx-populate-prefix/src/sdl2_gfx-populate-stamp/sdl2_gfx-populate-done	3de1abf8f7a64b5
+6317	6371	7469885831203622	E:/Project/C++/2DGamePhysic/cmake-build-debug/_deps/sdl2_gfx-subbuild/CMakeFiles/sdl2_gfx-populate-complete	3de1abf8f7a64b5
+6317	6371	7469885831203622	E:/Project/C++/2DGamePhysic/cmake-build-debug/_deps/sdl2_gfx-subbuild/sdl2_gfx-populate-prefix/src/sdl2_gfx-populate-stamp/sdl2_gfx-populate-done	3de1abf8f7a64b5
