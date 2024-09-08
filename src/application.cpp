@@ -21,6 +21,7 @@ void Application::Setup()
 {
 	m_running = Graphics::OpenWindow();
 	particle = new Particle(50, 100, 1.0);
+	particle->m_radius = 15;
 }
 
 void Application::Input()
@@ -83,16 +84,50 @@ void Application::Update()
 		deltaTime = Constant::maxDeltaTime;
 	}
 
-	particle->m_velocity = Vec2(100.0 * deltaTime, 30.0 * deltaTime);
+	particle->m_acceleration.SetX(2.0f * Constant::PIXELS_PER_METER);
+	particle->m_acceleration.SetY(9.8f * Constant::PIXELS_PER_METER);
 
-	//particle->m_position.Add(particle->m_velocity);
-	particle->m_position += particle->m_velocity;
+	//integrated acceleration and velocity to find new position
+	particle->m_velocity += particle->m_acceleration * deltaTime;
+	particle->m_position += particle->m_velocity * deltaTime;
+
+	if (particle->m_position.GetX() - particle->m_radius <= 0)															// I have no idea what im doing
+	{
+		particle->m_position.SetX(particle->m_radius);
+		
+		float velocityX = particle->m_velocity.GetX();
+		particle->m_velocity.SetX(velocityX * -1.0f);
+	}
+	else if (particle -> m_position.GetX() + particle->m_radius >= Graphics::Width())
+	{
+		particle->m_position.SetX(Graphics::Width() - particle->m_radius);
+
+		float velocityX = particle->m_velocity.GetX();
+		particle->m_velocity.SetX(velocityX * -1.0f);
+	}
+
+	if (particle->m_position.GetY() - particle->m_radius <= 0)
+	{
+		particle->m_position.SetY(particle->m_radius);
+
+		float velocityY = particle->m_velocity.GetY();
+		particle->m_velocity.SetY(velocityY * -1.0f);
+	}
+	else if (particle->m_position.GetY() + particle->m_radius >= Graphics::Height())
+	{
+		particle->m_position.SetY(Graphics::Height() - particle->m_radius);
+
+		float velocityY = particle->m_velocity.GetY();
+		particle->m_velocity.SetY(velocityY * -1.0f);
+	}
+
+
 }
 
 void Application::Render()
 {
 	Graphics::ClearScreen(0xFF0526263);
-	Graphics::DrawFillCircle(particle -> m_position.GetX(), particle->m_position.GetY(), 20, 0xFFFFFFFF);
+	Graphics::DrawFillCircle(particle -> m_position.GetX(), particle->m_position.GetY(), particle->m_radius, 0xFFFFFFFF);
 	Graphics::RenderFrame();
 }
 

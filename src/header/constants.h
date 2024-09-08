@@ -12,4 +12,6 @@ public:
 	static const int FPS;
 	static const int MILLISECOND_PER_FRAME;
 	static const float maxDeltaTime;
+
+	static const int PIXELS_PER_METER;
 };
