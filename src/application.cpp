@@ -46,13 +46,15 @@ void Application::Input()
 /*Called several times per second, meaning called per FPS */
 void Application::Update()
 {
-	static int timePreviousFrame = 0;						//should i make it static?
+	static int timePreviousFrame = 0;						
 	static int frameCount = 0;
 	static float fps = 0.0;
 	static int timeAccumulator = 0;
 
 	int currentTime = SDL_GetTicks();
-	int elapsedTime = currentTime - timePreviousFrame;
+	float elapsedTime = currentTime - timePreviousFrame;
+
+	//Update timePreviousTime
 	timePreviousFrame = currentTime;
 
 	// Accumulated time for FPS calculation (after every second)
@@ -69,23 +71,22 @@ void Application::Update()
 		timeAccumulator = 0;
 	}
 
-	/* Check if we are move too fast, and if so, waste some miliseconds, yes we move too fast we need to slow it down until it reach MILLISECS_PER_FRAME aka 1000/60 in this case */
-	int timeToWait = Constant::MILLISECOND_PER_FRAME - elapsedTime;
+	/* Check if we are move too fast, and if so, waste some milliseconds, yes we move too fast we need to slow it down until it reach MILLISECS_PER_FRAME aka 1000/60 in this case */
+	int timeToWait = Constant::MILLISECOND_PER_FRAME - (currentTime - timePreviousFrame);
 	if (timeToWait > 0)
 	{
 		SDL_Delay(timeToWait);
 	}
+	float deltaTime = elapsedTime / 1000.f;
+	if (deltaTime > Constant::maxDeltaTime)
+	{
+		deltaTime = Constant::maxDeltaTime;
+	}
 
-	particle->m_velocity = Vec2(2.0, 0.0);
+	particle->m_velocity = Vec2(100.0 * deltaTime, 30.0 * deltaTime);
 
 	//particle->m_position.Add(particle->m_velocity);
 	particle->m_position += particle->m_velocity;
-
-	/*float newX = particle->m_position.GetX() + particle->m_velocity.GetX();
-	particle->m_position.SetX(newX);
-
-	float newY = particle->m_position.GetY() + particle->m_velocity.GetX();
-	particle->m_position.SetY(newY);*/
 }
 
 void Application::Render()
