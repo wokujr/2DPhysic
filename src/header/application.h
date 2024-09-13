@@ -1,4 +1,6 @@
 #pragma once
+#include <vector>
+
 #include "particles.h"
 
 class Application
@@ -14,13 +16,9 @@ public:
 	void Render();
 	void Destroy();
 
-public:
+private:
 	bool m_running;
-	Particle* particle;
-
-//private:
-//	bool m_running;
-//	Particle* particle;
+	std::vector<Particle*> m_particles;
 
 };
 

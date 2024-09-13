@@ -8,10 +8,15 @@ public:
 	Particle(float x, float y, float mass);
 	~Particle();
 
-	Vec2 m_position;
-	Vec2 m_velocity;
-	Vec2 m_acceleration;
+	void Integrate(float deltaTime);
+	void AddForce(const Vec2& force);
+	void ClearForces();
 
-	float m_mass;
-	float m_radius;
+	Vec2 position;
+	Vec2 velocity;
+	Vec2 acceleration;
+	Vec2 sumForces;
+
+	float mass;
+	float radius;
 };

@@ -7,8 +7,7 @@
 
 Application::Application()
 	:
-	m_running(false),
-	particle(nullptr)
+	m_running(false)
 {
 }
 
@@ -20,8 +19,14 @@ bool Application::IsRunning()
 void Application::Setup()
 {
 	m_running = Graphics::OpenWindow();
-	particle = new Particle(50, 100, 1.0);
-	particle->m_radius = 15;
+
+	Particle* smallBall = new Particle(50, 100, 1.0);			//smallBall.... LMAO
+	smallBall->radius = 6;
+	m_particles.push_back(smallBall);
+
+	Particle* bigBall = new Particle(50, 200, 3.0);			
+	bigBall->radius = 12;
+	m_particles.push_back(bigBall);
 }
 
 void Application::Input()
@@ -47,13 +52,13 @@ void Application::Input()
 /*Called several times per second, meaning called per FPS */
 void Application::Update()
 {
-	static int timePreviousFrame = 0;						
+	static float timePreviousFrame = 0.f;						
 	static int frameCount = 0;
 	static float fps = 0.0;
-	static int timeAccumulator = 0;
+	static float timeAccumulator = 0.f;
 
-	int currentTime = SDL_GetTicks();
-	float elapsedTime = currentTime - timePreviousFrame;
+	UINT64 currentTime = SDL_GetTicks64();
+	float elapsedTime = static_cast<float>(currentTime) - timePreviousFrame;
 
 	//Update timePreviousTime
 	timePreviousFrame = currentTime;
@@ -78,62 +83,74 @@ void Application::Update()
 	{
 		SDL_Delay(timeToWait);
 	}
+
 	float deltaTime = elapsedTime / 1000.f;
 	if (deltaTime > Constant::maxDeltaTime)
 	{
 		deltaTime = Constant::maxDeltaTime;
 	}
 
-	particle->m_acceleration.SetX(2.0f * Constant::PIXELS_PER_METER);
-	particle->m_acceleration.SetY(9.8f * Constant::PIXELS_PER_METER);
-
-	//integrated acceleration and velocity to find new position
-	particle->m_velocity += particle->m_acceleration * deltaTime;
-	particle->m_position += particle->m_velocity * deltaTime;
-
-	if (particle->m_position.GetX() - particle->m_radius <= 0)															// I have no idea what im doing
+	for (auto particle: m_particles)
 	{
-		particle->m_position.SetX(particle->m_radius);
-		
-		float velocityX = particle->m_velocity.GetX();
-		particle->m_velocity.SetX(velocityX * -1.0f);
+		//Add "wind" force
+		Vec2 wind = Vec2(1.f * Constant::PIXELS_PER_METER, 0.0f );
+		particle->AddForce(wind);
+
+		//Add "Weight" force to particle
+		Vec2 weight = Vec2(0.f, 9.8f * Constant::PIXELS_PER_METER);
+		particle->AddForce(weight);
+
+		//integrate velocity to estimate new position
+		particle->Integrate(deltaTime);
+
+		if (particle->position.GetX() - particle->radius <= 0)
+		{
+			particle->position.SetX(particle->radius);
+			
+			float velocityX = particle->velocity.GetX();
+			particle->velocity.SetX(velocityX * -1.0f);
+		}
+		else if (particle-> position.GetX() + particle->radius >= Graphics::Width())
+		{
+			particle->position.SetX(Graphics::Width() - particle->radius);
+
+			float velocityX = particle->velocity.GetX();
+			particle->velocity.SetX(velocityX * -1.0f);
+		}
+
+		if (particle->position.GetY() - particle->radius <= 0)
+		{
+			particle->position.SetY(particle->radius);
+
+			float velocityY = particle->velocity.GetY();
+			particle->velocity.SetY(velocityY * -1.0f);
+		}
+		else if (particle->position.GetY() + particle->radius >= Graphics::Height())
+		{
+			particle->position.SetY(Graphics::Height() - particle->radius);
+
+			float velocityY = particle->velocity.GetY();
+			particle->velocity.SetY(velocityY * -1.0f);
+		}
 	}
-	else if (particle -> m_position.GetX() + particle->m_radius >= Graphics::Width())
-	{
-		particle->m_position.SetX(Graphics::Width() - particle->m_radius);
-
-		float velocityX = particle->m_velocity.GetX();
-		particle->m_velocity.SetX(velocityX * -1.0f);
-	}
-
-	if (particle->m_position.GetY() - particle->m_radius <= 0)
-	{
-		particle->m_position.SetY(particle->m_radius);
-
-		float velocityY = particle->m_velocity.GetY();
-		particle->m_velocity.SetY(velocityY * -1.0f);
-	}
-	else if (particle->m_position.GetY() + particle->m_radius >= Graphics::Height())
-	{
-		particle->m_position.SetY(Graphics::Height() - particle->m_radius);
-
-		float velocityY = particle->m_velocity.GetY();
-		particle->m_velocity.SetY(velocityY * -1.0f);
-	}
-
-
 }
 
 void Application::Render()
 {
-	Graphics::ClearScreen(0xFF0526263);
-	Graphics::DrawFillCircle(particle -> m_position.GetX(), particle->m_position.GetY(), particle->m_radius, 0xFFFFFFFF);
+	Graphics::ClearScreen(0x13746B);			//change the background color, but it's kinda complicated
+	for (auto particle: m_particles)
+	{
+		Graphics::DrawFillCircle(particle-> position.GetX(), particle->position.GetY(), particle->radius, 0xFFFFFFFF);
+	}
 	Graphics::RenderFrame();
 }
 
 void Application::Destroy()
 {
-	delete particle;
+	for (auto particle: m_particles)
+	{
+		delete particle;
+	}
 	Graphics::CloseWindow();
 }
 

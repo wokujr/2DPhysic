@@ -48,9 +48,15 @@ bool Graphics::OpenWindow()
 	return true;
 }
 
+/* Set the background col */
 void Graphics::ClearScreen(Uint32 color)
 {
-	SDL_SetRenderDrawColor(renderer, color >> 16, color >> 8, color, 255);
+	// Extract RGB components from the 24-bit color		// i made myself confuse with this, TeHe~. using the shifts bit position by 16 adn position by 8, so basically 0xRRGGBB.
+	Uint8 red = (color >> 16) & 0xFF;					// Extract red component (bits 16-23)
+	Uint8 green = (color >> 8) & 0xFF;					// Extract green component (bits 8-15)
+	Uint8 blue = color & 0xFF;							// Extract blue component (bits 0-7)
+
+	SDL_SetRenderDrawColor(renderer,  red,  green, blue, 255);
 	SDL_RenderClear(renderer);
 }
 

@@ -48,3 +48,11 @@ private:
 	float m_x;
 };
 
+
+
+/*
+ *  calculus is the theory where we need to find delta time aka elapsed time that needed to reach a certain position
+ *	so the smaller the time, the more accurate and less error of estimation to reach a certain position, the idea is to find how we can reach value near 0, or less time,
+ *	and be more accurate. that's why bigger FPS, make movement looks smoother, and precisely. especially in first person shooting game, where FPS(frame rate per second) is matter.
+ *	there 2 calculus : differential calculus and integral calculus.
+ */
