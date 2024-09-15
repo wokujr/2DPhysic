@@ -6,6 +6,14 @@ Particle::Particle(float x, float y, float mass)
 {
 	this->position = Vec2(x, y);
 	this->mass = mass;
+	if (mass != 0.0f)
+	{
+		this->inverseMass = 1.0f / mass;
+	}
+	else
+	{
+		this->inverseMass = 0.0f;
+	}
 	std::cout << "Particle constructor called \n";
 }
 
@@ -17,7 +25,7 @@ Particle::~Particle()
 void Particle::Integrate(float deltaTime)
 {
 	//Find the acceleration based on the forces that being applied
-	acceleration = sumForces / mass;
+	acceleration = sumForces * inverseMass;
 
 	//integrate acceleration to find new velocity
 	velocity += acceleration * deltaTime;

@@ -16,6 +16,8 @@ public:
 	void Render();
 	void Destroy();
 
+	Vec2 pushForces;
+
 private:
 	bool m_running;
 	std::vector<Particle*> m_particles;

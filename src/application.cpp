@@ -7,7 +7,8 @@
 
 Application::Application()
 	:
-	m_running(false)
+	m_running(false),
+	pushForces(0,0)
 {
 }
 
@@ -24,9 +25,9 @@ void Application::Setup()
 	smallBall->radius = 6;
 	m_particles.push_back(smallBall);
 
-	Particle* bigBall = new Particle(50, 200, 3.0);			
+	/*Particle* bigBall = new Particle(100, 100, 3.0);			
 	bigBall->radius = 12;
-	m_particles.push_back(bigBall);
+	m_particles.push_back(bigBall);*/
 }
 
 void Application::Input()
@@ -40,9 +41,48 @@ void Application::Input()
 			m_running = false;
 			break;
 		case SDL_KEYDOWN:
-			if (event.key.keysym.sym = SDLK_ESCAPE)
+			if (event.key.keysym.sym == SDLK_ESCAPE)
 			{
 				m_running = false;
+			}
+			if (event.key.keysym.sym == SDLK_UP)							
+			{
+				auto forceY = -50.f * Constant::PIXELS_PER_METER;
+				pushForces.SetY(forceY);
+			}
+			if (event.key.keysym.sym == SDLK_DOWN)
+			{
+				auto forceY = 50.f * Constant::PIXELS_PER_METER;
+				pushForces.SetY(forceY);
+			}
+			if (event.key.keysym.sym == SDLK_RIGHT)
+			{
+				auto forceX = 50.f * Constant::PIXELS_PER_METER;
+				pushForces.SetX(forceX);
+			}
+			if (event.key.keysym.sym == SDLK_LEFT)
+			{
+				auto forceX = -50.f * Constant::PIXELS_PER_METER;
+				pushForces.SetX(forceX);
+			}
+			break;
+
+		case SDL_KEYUP:
+			if (event.key.keysym.sym == SDLK_UP)
+			{
+				pushForces.SetY(0.f);
+			}
+			if (event.key.keysym.sym == SDLK_DOWN)
+			{
+				pushForces.SetX(0.f);
+			}
+			if (event.key.keysym.sym == SDLK_RIGHT)
+			{
+				pushForces.SetY(0.f);
+			}
+			if (event.key.keysym.sym == SDLK_LEFT)
+			{
+				pushForces.SetX(0.f);
 			}
 			break;
 		}
@@ -97,8 +137,12 @@ void Application::Update()
 		particle->AddForce(wind);
 
 		//Add "Weight" force to particle
-		Vec2 weight = Vec2(0.f, 9.8f * Constant::PIXELS_PER_METER);
+		Vec2 weight = Vec2(0.f, particle->mass * 9.8f * Constant::PIXELS_PER_METER);			// 9.8 is gravity acceleration which is 9.81 m/s2.
 		particle->AddForce(weight);
+
+		//Apply a "push force" to particle
+		particle->AddForce(pushForces);
+
 
 		//integrate velocity to estimate new position
 		particle->Integrate(deltaTime);

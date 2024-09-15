@@ -15,8 +15,11 @@ public:
 	Vec2 position;
 	Vec2 velocity;
 	Vec2 acceleration;
+
 	Vec2 sumForces;
 
 	float mass;
+	float inverseMass;
+
 	float radius;
 };
