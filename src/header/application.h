@@ -1,4 +1,5 @@
 #pragma once
+#include <SDL_rect.h>
 #include <vector>
 
 #include "particles.h"
@@ -16,11 +17,11 @@ public:
 	void Render();
 	void Destroy();
 
-	Vec2 pushForces;
-
 private:
 	bool m_running;
 	std::vector<Particle*> m_particles;
+	Vec2 pushForces;
 
+	SDL_Rect liquid;
 };
 

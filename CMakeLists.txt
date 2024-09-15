@@ -96,6 +96,9 @@ target_sources(${PROJECT_NAME}
 
     "${CMAKE_CURRENT_SOURCE_DIR}/src/header/constants.h"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/constants.cpp"
+
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/header/force.h"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/force.cpp"
 )
 
 

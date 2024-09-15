@@ -86,6 +86,11 @@ void Graphics::DrawRect(int x, int y, int width, int height, Uint32 color)
 	boxColor(renderer, x - width / 2.0, y - height / 2.0, x + width / 2.0, y + height / 2.0, color);
 }
 
+void Graphics::DrawFillRect(int x, int y, int width, int height, Uint32 color)
+{
+	boxColor(renderer, x - width / 2.0, y - height / 2.0, x + width / 2.0, y + height / 2.0, color);
+}
+
 void Graphics::DrawPolygon(int x, int y, const std::vector<Vec2>& vertices, Uint32 color)
 {
 	for (int i = 0; i < vertices.size(); i++)

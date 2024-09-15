@@ -28,6 +28,12 @@ void Application::Setup()
 	/*Particle* bigBall = new Particle(100, 100, 3.0);			
 	bigBall->radius = 12;
 	m_particles.push_back(bigBall);*/
+
+	liquid.x = 0;
+	liquid.y = Graphics::Height() / 2;
+	liquid.w = Graphics::Width();
+	liquid.h = Graphics::Height() / 2;
+
 }
 
 void Application::Input()
@@ -182,6 +188,10 @@ void Application::Update()
 void Application::Render()
 {
 	Graphics::ClearScreen(0x13746B);			//change the background color, but it's kinda complicated
+
+	Uint32 liquidColor = 0xFF13376E;				//why?, its need ARGB format, so if you choose from color picker it might be failed. it should be blue but turn out brown, TF
+	Graphics::DrawFillRect(liquid.x + liquid.w / 2, liquid.y + liquid.h / 2, liquid.w, liquid.h, liquidColor); 
+
 	for (auto particle: m_particles)
 	{
 		Graphics::DrawFillCircle(particle-> position.GetX(), particle->position.GetY(), particle->radius, 0xFFFFFFFF);
