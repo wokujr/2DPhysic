@@ -1,5 +1,7 @@
 #pragma once
 
+#include <SDL_stdinc.h>
+
 #include "vec2.h"
 
 class Particle
@@ -20,6 +22,8 @@ public:
 
 	float mass;
 	float inverseMass;
+
+	Uint32 color;
 
 	float radius;
 };

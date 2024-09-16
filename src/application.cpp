@@ -98,8 +98,24 @@ void Application::Input()
 			{
 				int x, y;
 				SDL_GetMouseState(&x, &y);
-				Particle* particle = new Particle(x, y, 1.0);
-				particle->radius = 5;
+
+				//Generate random mass between 0.5 ~ 3.0
+				float randomMass = 0.5f + static_cast<float>(rand()) / (static_cast<float>(RAND_MAX / (3.0f - 0.5f)));
+
+				//Generate random radius between 3 and 10
+				int randomRadius = 3 + (rand() % 8);		//random radius between 3 and 10. perhaps....
+
+				Particle* particle = new Particle(x, y, randomMass);
+				particle->radius = randomRadius;
+				
+
+				//Generate random color (ARGB format)
+				Uint32 randomColor = 0xFF000000
+					| ((rand() % 256) << 16)	// Red
+					| ((rand() % 256) << 6)		// Green
+					| (rand() % 256);			// Blue
+				particle->color = randomColor;
+
 				m_particles.push_back(particle);
 			}
 			break;
@@ -217,7 +233,7 @@ void Application::Render()
 
 	for (auto particle: m_particles)
 	{
-		Graphics::DrawFillCircle(particle-> position.GetX(), particle->position.GetY(), particle->radius, 0xFFFFFFFF);
+		Graphics::DrawFillCircle(particle-> position.GetX(), particle->position.GetY(), particle->radius, particle->color);
 	}
 	Graphics::RenderFrame();
 }
