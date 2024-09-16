@@ -4,6 +4,7 @@
 #include <windows.h>
 #include "graphics.h"
 #include "constants.h"
+#include "force.h"
 
 Application::Application()
 	:
@@ -25,9 +26,9 @@ void Application::Setup()
 	smallBall->radius = 6;
 	m_particles.push_back(smallBall);
 
-	/*Particle* bigBall = new Particle(100, 100, 3.0);			
+	Particle* bigBall = new Particle(100, 100, 3.0);			
 	bigBall->radius = 12;
-	m_particles.push_back(bigBall);*/
+	m_particles.push_back(bigBall);
 
 	liquid.x = 0;
 	liquid.y = Graphics::Height() / 2;
@@ -91,7 +92,19 @@ void Application::Input()
 				pushForces.SetX(0.f);
 			}
 			break;
+
+		case SDL_MOUSEBUTTONDOWN:
+			if(event.button.button == SDL_BUTTON_LEFT)
+			{
+				int x, y;
+				SDL_GetMouseState(&x, &y);
+				Particle* particle = new Particle(x, y, 1.0);
+				particle->radius = 5;
+				m_particles.push_back(particle);
+			}
+			break;
 		}
+		
 	}
 }
 
@@ -139,8 +152,11 @@ void Application::Update()
 	for (auto particle: m_particles)
 	{
 		//Add "wind" force
-		Vec2 wind = Vec2(1.f * Constant::PIXELS_PER_METER, 0.0f );
-		particle->AddForce(wind);
+		/*if (particle->position.GetY() < liquid.y)
+		{
+			Vec2 wind = Vec2(1.f * Constant::PIXELS_PER_METER, 0.0f);
+			particle->AddForce(wind);
+		}*/
 
 		//Add "Weight" force to particle
 		Vec2 weight = Vec2(0.f, particle->mass * 9.8f * Constant::PIXELS_PER_METER);			// 9.8 is gravity acceleration which is 9.81 m/s2.
@@ -149,6 +165,13 @@ void Application::Update()
 		//Apply a "push force" to particle
 		particle->AddForce(pushForces);
 
+		//Apply drag force if enter fluid alike thing
+		if (particle -> position.GetY() >= liquid.y)
+		{
+			Vec2 drag = Force::GenerateDragForce(*particle, 0.02f);
+			particle->AddForce(drag);
+
+		}
 
 		//integrate velocity to estimate new position
 		particle->Integrate(deltaTime);
@@ -189,7 +212,7 @@ void Application::Render()
 {
 	Graphics::ClearScreen(0x13746B);			//change the background color, but it's kinda complicated
 
-	Uint32 liquidColor = 0xFF13376E;				//why?, its need ARGB format, so if you choose from color picker it might be failed. it should be blue but turn out brown, TF
+	Uint32 liquidColor = 0xFF6E3713;				
 	Graphics::DrawFillRect(liquid.x + liquid.w / 2, liquid.y + liquid.h / 2, liquid.w, liquid.h, liquidColor); 
 
 	for (auto particle: m_particles)
