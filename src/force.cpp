@@ -1,4 +1,5 @@
 #include "force.h"
+#include <algorithm>
 
 
 Force::Force()
@@ -27,4 +28,38 @@ Vec2 Force::GenerateDragForce(const Particle& particle, float k)
 	}
 
 	return dragForce;
+}
+
+Vec2 Force::GenerateFrictionForce(const Particle& particle, float k)
+{
+	Vec2 frictionForce = Vec2(0.f, 0.f);
+
+	Vec2 frictionDirection = particle.velocity.UnitVector() * -1.0f;	//Flip the velocity direction.
+
+	float frictionMagnitude = k;
+
+	frictionForce = frictionDirection * frictionMagnitude;
+	return frictionDirection;
+}
+
+Vec2 Force::GenerateGravitionalForce(const Particle& particleA, const Particle& particleB, float G, float minDistance,
+	float maxDistance)
+{
+	//Calculate distance between 2 particles
+	Vec2 deltaDistance = (particleB.position - particleA.position);
+
+	float distanceSquared = deltaDistance.MagnitudeSquared();
+
+	//clamp the value
+	distanceSquared = std::clamp(distanceSquared, minDistance, maxDistance);
+
+	//Calculate the direction of the attraction
+	Vec2 attractionDirection = deltaDistance.UnitVector();
+
+	//Calculate the strength of attraction force
+	float attractionMagnitude = G * (particleA.mass * particleB.mass) / distanceSquared;
+
+	//calculate the final result
+	Vec2 attractionForce = attractionDirection * attractionMagnitude;
+	return attractionForce;
 }

@@ -19,9 +19,15 @@ public:
 
 private:
 	bool m_running;
+	bool isLeftButtonDown;
+
 	std::vector<Particle*> m_particles;
+
 	Vec2 pushForces;
+	Vec2 m_mouseCursor;
 
 	SDL_Rect liquid;
+
+	Particle* selectedParticle;
 };
 

@@ -9,8 +9,13 @@
 Application::Application()
 	:
 	m_running(false),
-	pushForces(0,0)
+	pushForces(0, 0),
+	liquid(),
+	m_mouseCursor(Vec2(0.f, 0.f)),
+	isLeftButtonDown(false),
+	selectedParticle(nullptr)
 {
+
 }
 
 bool Application::IsRunning()
@@ -93,6 +98,7 @@ void Application::Input()
 			}
 			break;
 
+		/*//Generate new particle with random color and mass by loft click th mouse
 		case SDL_MOUSEBUTTONDOWN:
 			if(event.button.button == SDL_BUTTON_LEFT)
 			{
@@ -119,8 +125,49 @@ void Application::Input()
 				m_particles.push_back(particle);
 			}
 			break;
+			*/
+
+		case SDL_MOUSEBUTTONDOWN:
+			if (!isLeftButtonDown && event.button.button == SDL_BUTTON_LEFT)
+			{
+				isLeftButtonDown = true;
+				int x, y;
+				SDL_GetMouseState(&x, &y);
+				m_mouseCursor.SetX(x);
+				m_mouseCursor.SetY(y);
+
+				//check if click inside any ball
+				for (auto particle : m_particles )
+				{
+					float distanceToBall = (particle->position - m_mouseCursor).Magnitude();
+					if (distanceToBall <= particle->radius)
+					{
+						selectedParticle = particle;
+						break;
+					}
+				}
+			}
+			break;
+		case SDL_MOUSEBUTTONUP:
+			if (isLeftButtonDown && event.button.button == SDL_BUTTON_LEFT)
+			{
+				isLeftButtonDown = false;
+				if (selectedParticle)
+				{
+					Vec2 impulseDirection = (selectedParticle->position - m_mouseCursor).UnitVector();
+					float impulseMagnitude = (selectedParticle->position - m_mouseCursor).Magnitude() * 5.0f;
+					selectedParticle->velocity = impulseDirection * impulseMagnitude;
+					selectedParticle = nullptr;				// Clear the selection
+				}
+			}
+			break;
+
+			case SDL_MOUSEMOTION:
+			m_mouseCursor.SetX(event.motion.x);
+			m_mouseCursor.SetY(event.motion.y);
+			break;
 		}
-		
+
 	}
 }
 
@@ -152,7 +199,7 @@ void Application::Update()
 		timeAccumulator = 0;
 	}
 
-	/* Check if we are move too fast, and if so, waste some milliseconds, yes we move too fast we need to slow it down until it reach MILLISECS_PER_FRAME aka 1000/60 in this case */
+	/* Check if we are move too fast, and if so, waste some milliseconds, yes we move too fast we need to slow it down until it reach MILLISECOND_PER_FRAME aka 1000/60 in this case */
 	int timeToWait = Constant::MILLISECOND_PER_FRAME - (currentTime - timePreviousFrame);
 	if (timeToWait > 0)
 	{
@@ -173,13 +220,16 @@ void Application::Update()
 			Vec2 wind = Vec2(1.f * Constant::PIXELS_PER_METER, 0.0f);
 			particle->AddForce(wind);
 		}*/
-
 		//Add "Weight" force to particle
-		Vec2 weight = Vec2(0.f, particle->mass * 9.8f * Constant::PIXELS_PER_METER);			// 9.8 is gravity acceleration which is 9.81 m/s2.
-		particle->AddForce(weight);
+		//Vec2 weight = Vec2(0.f, particle->mass * 9.8f * Constant::PIXELS_PER_METER);			// 9.8 is gravity acceleration which is 9.81 m/s2.
+		//particle->AddForce(weight);
 
 		//Apply a "push force" to particle
 		particle->AddForce(pushForces);
+		Vec2 friction = Force::GenerateFrictionForce(*particle, 10.0f * Constant::PIXELS_PER_METER);
+		particle->AddForce(friction);
+
+		Vec2 attraction = Force::GenerateGravitionalForce(*m_particles[0], *m_particles[1], 1000.0f, 5, 100);
 
 		//Apply drag force if enter fluid alike thing
 		if (particle -> position.GetY() >= liquid.y)
@@ -229,12 +279,20 @@ void Application::Render()
 	Graphics::ClearScreen(0x13746B);			//change the background color, but it's kinda complicated
 
 	Uint32 liquidColor = 0xFF6E3713;				
-	Graphics::DrawFillRect(liquid.x + liquid.w / 2, liquid.y + liquid.h / 2, liquid.w, liquid.h, liquidColor); 
+	Graphics::DrawFillRect(liquid.x + liquid.w / 2, liquid.y + liquid.h / 2, liquid.w, liquid.h, liquidColor);
 
-	for (auto particle: m_particles)
+	/* for (auto particle: m_particles)
 	{
 		Graphics::DrawFillCircle(particle-> position.GetX(), particle->position.GetY(), particle->radius, particle->color);
+	}*/
+
+	if (isLeftButtonDown && selectedParticle != nullptr)
+	{
+		Graphics::DrawLine(selectedParticle->position.GetX(), selectedParticle->position.GetY(), m_mouseCursor.GetX(), m_mouseCursor.GetY(), 0xFF0000FF);
 	}
+	Graphics::DrawFillCircle(m_particles[0]->position.GetX(), m_particles[0]->position.GetY(), m_particles[0]->radius, 0xFFAA3300);
+	Graphics::DrawFillCircle(m_particles[1]->position.GetX(), m_particles[1]->position.GetY(), m_particles[1]->radius, 0xFF00FFFF);
+
 	Graphics::RenderFrame();
 }
 
