@@ -14,8 +14,8 @@ Application::Application()
 	m_mouseCursor(Vec2(0.f, 0.f)),
 	isLeftButtonDown(false),
 	selectedParticle(nullptr),
-	m_k(0),
-	m_restLenght(0),
+	m_k(40),
+	m_restLenght(200),
 	m_anchor(0.f, 0.f)
 {
 
@@ -33,21 +33,6 @@ void Application::Setup()
 	Particle* bob = new Particle(Graphics::Width() / 2.0f, Graphics::Height() / 2.0f, 2.0f);
 	bob->radius = 10;
 	m_particles.push_back(bob);
-
-	/* for gravitational force
-	Particle* smallBall = new Particle(50, 100, 1.0);			//smallBall.... LMAO
-	smallBall->radius = 6;
-	m_particles.push_back(smallBall);
-
-	Particle* bigBall = new Particle(200, 300, 6.0);
-	bigBall->radius = 20;
-	m_particles.push_back(bigBall);
-	*/
-
-	/*liquid.x = 0;
-	liquid.y = Graphics::Height() / 2;
-	liquid.w = Graphics::Width();
-	liquid.h = Graphics::Height() / 2;*/
 
 }
 
@@ -223,43 +208,13 @@ void Application::Update()
 
 	for (auto particle: m_particles)
 	{
-		//Add "wind" force
-		/*if (particle->position.GetY() < liquid.y)
-		{
-			Vec2 wind = Vec2(1.f * Constant::PIXELS_PER_METER, 0.0f);
-			particle->AddForce(wind);
-		}*/
-		//Add "Weight" force to particle
-		//Vec2 weight = Vec2(0.f, particle->mass * 9.8f * Constant::PIXELS_PER_METER);			// 9.8 is gravity acceleration which is 9.81 m/s2.
-		//particle->AddForce(weight);
-
-		//Apply a "push force" to particle
-		/*particle->AddForce(pushForces);
-		Vec2 friction = Force::GenerateFrictionForce(*particle, 10.0f * Constant::PIXELS_PER_METER);
-		particle->AddForce(friction);*/
-
-		/*Vec2 attraction = Force::GenerateGravitionalForce(*m_particles[0], *m_particles[1], 1000.0f, 5, 100);
-		m_particles[0]->AddForce(attraction);
-		m_particles[1]->AddForce(-attraction);*/
-
-		//Apply drag force if enter fluid alike thing
-		/*if (particle -> position.GetY() >= liquid.y)
-		{
-			Vec2 drag = Force::GenerateDragForce(*particle, 0.02f);
-			particle->AddForce(drag);
-
-		}*/
+		particle->AddForce(pushForces);
 
 		/** Applying spring force */ 
 		Vec2 drag = Force::GenerateDragForce(*particle, 0.001f);
 		particle->AddForce(drag);
 		Vec2 weight = Vec2(0.f, particle->mass * 9.8f * Constant::PIXELS_PER_METER);
 		particle->AddForce(weight);
-
-		//Apply spring force
-		Vec2 springForce = Force::GenerateSpringForce(m_particles[0], m_anchor, m_restLenght, m_k);
-		m_particles[0]->AddForce(springForce);
-
 
 		//integrate velocity to estimate new position
 		particle->Integrate(deltaTime);
@@ -294,24 +249,14 @@ void Application::Update()
 			particle->velocity.SetY(velocityY * -0.9f);
 		}
 	}
+	//Apply spring force
+	Vec2 springForce = Force::GenerateSpringForce(m_particles[0], m_anchor, m_restLenght, m_k);
+	m_particles[0]->AddForce(springForce);
 }
 
 void Application::Render()
 {
 	Graphics::ClearScreen(0x13746B);			//change the background color, but it's kinda complicated
-
-	 /*Uint32 liquidColor = 0xFF6E3713;				
-	Graphics::DrawFillRect(liquid.x + liquid.w / 2, liquid.y + liquid.h / 2, liquid.w, liquid.h, liquidColor);
-
-	 for (auto particle: m_particles)
-	{
-		Graphics::DrawFillCircle(particle-> position.GetX(), particle->position.GetY(), particle->radius, particle->color);
-	}*/
-
-	/*if (isLeftButtonDown && selectedParticle != nullptr)
-	{
-		Graphics::DrawLine(selectedParticle->position.GetX(), selectedParticle->position.GetY(), m_mouseCursor.GetX(), m_mouseCursor.GetY(), 0xFF0000FF);
-	}*/
 
 	//Draw anchor
 	Graphics::DrawFillCircle(m_anchor.GetX(), m_anchor.GetY(), 5, 0xFF001155);
@@ -321,9 +266,6 @@ void Application::Render()
 
 	//Draw spring (just line)
 	Graphics::DrawLine(m_anchor.GetX(), m_anchor.GetY(), m_particles[0]->position.GetX(), m_particles[0]->position.GetY(), 0xFF313131);
-
-	/*Graphics::DrawFillCircle(m_particles[0]->position.GetX(), m_particles[0]->position.GetY(), m_particles[0]->radius, 0xFFAA3300);
-	Graphics::DrawFillCircle(m_particles[1]->position.GetX(), m_particles[1]->position.GetY(), m_particles[1]->radius, 0xFF00FFFF);*/
 
 	Graphics::RenderFrame();
 }
