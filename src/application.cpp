@@ -13,7 +13,10 @@ Application::Application()
 	liquid(),
 	m_mouseCursor(Vec2(0.f, 0.f)),
 	isLeftButtonDown(false),
-	selectedParticle(nullptr)
+	selectedParticle(nullptr),
+	m_k(0),
+	m_restLenght(0),
+	m_anchor(0.f, 0.f)
 {
 
 }
@@ -26,19 +29,25 @@ bool Application::IsRunning()
 void Application::Setup()
 {
 	m_running = Graphics::OpenWindow();
+	m_anchor = Vec2(Graphics::Width() / 2.0f, 30);
+	Particle* bob = new Particle(Graphics::Width() / 2.0f, Graphics::Height() / 2.0f, 2.0f);
+	bob->radius = 10;
+	m_particles.push_back(bob);
 
+	/* for gravitational force
 	Particle* smallBall = new Particle(50, 100, 1.0);			//smallBall.... LMAO
 	smallBall->radius = 6;
 	m_particles.push_back(smallBall);
 
-	Particle* bigBall = new Particle(100, 100, 3.0);			
-	bigBall->radius = 12;
+	Particle* bigBall = new Particle(200, 300, 6.0);
+	bigBall->radius = 20;
 	m_particles.push_back(bigBall);
+	*/
 
-	liquid.x = 0;
+	/*liquid.x = 0;
 	liquid.y = Graphics::Height() / 2;
 	liquid.w = Graphics::Width();
-	liquid.h = Graphics::Height() / 2;
+	liquid.h = Graphics::Height() / 2;*/
 
 }
 
@@ -225,19 +234,32 @@ void Application::Update()
 		//particle->AddForce(weight);
 
 		//Apply a "push force" to particle
-		particle->AddForce(pushForces);
+		/*particle->AddForce(pushForces);
 		Vec2 friction = Force::GenerateFrictionForce(*particle, 10.0f * Constant::PIXELS_PER_METER);
-		particle->AddForce(friction);
+		particle->AddForce(friction);*/
 
-		Vec2 attraction = Force::GenerateGravitionalForce(*m_particles[0], *m_particles[1], 1000.0f, 5, 100);
+		/*Vec2 attraction = Force::GenerateGravitionalForce(*m_particles[0], *m_particles[1], 1000.0f, 5, 100);
+		m_particles[0]->AddForce(attraction);
+		m_particles[1]->AddForce(-attraction);*/
 
 		//Apply drag force if enter fluid alike thing
-		if (particle -> position.GetY() >= liquid.y)
+		/*if (particle -> position.GetY() >= liquid.y)
 		{
 			Vec2 drag = Force::GenerateDragForce(*particle, 0.02f);
 			particle->AddForce(drag);
 
-		}
+		}*/
+
+		/** Applying spring force */ 
+		Vec2 drag = Force::GenerateDragForce(*particle, 0.001f);
+		particle->AddForce(drag);
+		Vec2 weight = Vec2(0.f, particle->mass * 9.8f * Constant::PIXELS_PER_METER);
+		particle->AddForce(weight);
+
+		//Apply spring force
+		Vec2 springForce = Force::GenerateSpringForce(m_particles[0], m_anchor, m_restLenght, m_k);
+		m_particles[0]->AddForce(springForce);
+
 
 		//integrate velocity to estimate new position
 		particle->Integrate(deltaTime);
@@ -247,14 +269,14 @@ void Application::Update()
 			particle->position.SetX(particle->radius);
 			
 			float velocityX = particle->velocity.GetX();
-			particle->velocity.SetX(velocityX * -1.0f);
+			particle->velocity.SetX(velocityX * -0.9f);
 		}
 		else if (particle-> position.GetX() + particle->radius >= Graphics::Width())
 		{
 			particle->position.SetX(Graphics::Width() - particle->radius);
 
 			float velocityX = particle->velocity.GetX();
-			particle->velocity.SetX(velocityX * -1.0f);
+			particle->velocity.SetX(velocityX * -0.9f);
 		}
 
 		if (particle->position.GetY() - particle->radius <= 0)
@@ -262,14 +284,14 @@ void Application::Update()
 			particle->position.SetY(particle->radius);
 
 			float velocityY = particle->velocity.GetY();
-			particle->velocity.SetY(velocityY * -1.0f);
+			particle->velocity.SetY(velocityY * -0.9f);
 		}
 		else if (particle->position.GetY() + particle->radius >= Graphics::Height())
 		{
 			particle->position.SetY(Graphics::Height() - particle->radius);
 
 			float velocityY = particle->velocity.GetY();
-			particle->velocity.SetY(velocityY * -1.0f);
+			particle->velocity.SetY(velocityY * -0.9f);
 		}
 	}
 }
@@ -278,20 +300,30 @@ void Application::Render()
 {
 	Graphics::ClearScreen(0x13746B);			//change the background color, but it's kinda complicated
 
-	Uint32 liquidColor = 0xFF6E3713;				
+	 /*Uint32 liquidColor = 0xFF6E3713;				
 	Graphics::DrawFillRect(liquid.x + liquid.w / 2, liquid.y + liquid.h / 2, liquid.w, liquid.h, liquidColor);
 
-	/* for (auto particle: m_particles)
+	 for (auto particle: m_particles)
 	{
 		Graphics::DrawFillCircle(particle-> position.GetX(), particle->position.GetY(), particle->radius, particle->color);
 	}*/
 
-	if (isLeftButtonDown && selectedParticle != nullptr)
+	/*if (isLeftButtonDown && selectedParticle != nullptr)
 	{
 		Graphics::DrawLine(selectedParticle->position.GetX(), selectedParticle->position.GetY(), m_mouseCursor.GetX(), m_mouseCursor.GetY(), 0xFF0000FF);
-	}
-	Graphics::DrawFillCircle(m_particles[0]->position.GetX(), m_particles[0]->position.GetY(), m_particles[0]->radius, 0xFFAA3300);
-	Graphics::DrawFillCircle(m_particles[1]->position.GetX(), m_particles[1]->position.GetY(), m_particles[1]->radius, 0xFF00FFFF);
+	}*/
+
+	//Draw anchor
+	Graphics::DrawFillCircle(m_anchor.GetX(), m_anchor.GetY(), 5, 0xFF001155);
+
+	//Draw Bob
+	Graphics::DrawFillCircle(m_particles[0]->position.GetX(), m_particles[0]->position.GetY(), m_particles[0]->radius, 0xFFFFFFFF);
+
+	//Draw spring (just line)
+	Graphics::DrawLine(m_anchor.GetX(), m_anchor.GetY(), m_particles[0]->position.GetX(), m_particles[0]->position.GetY(), 0xFF313131);
+
+	/*Graphics::DrawFillCircle(m_particles[0]->position.GetX(), m_particles[0]->position.GetY(), m_particles[0]->radius, 0xFFAA3300);
+	Graphics::DrawFillCircle(m_particles[1]->position.GetX(), m_particles[1]->position.GetY(), m_particles[1]->radius, 0xFF00FFFF);*/
 
 	Graphics::RenderFrame();
 }
